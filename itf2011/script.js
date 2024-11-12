@@ -1,5 +1,5 @@
 // Normalize Vietnamese text by removing diacritics
-function normalizeVietnamese(str) {
+/*function normalizeVietnamese(str) {
     return str.normalize('NFD')
         .replace(/[\u0300-\u036f]/g, '')
         .toLowerCase();
@@ -43,6 +43,7 @@ function normalizeVietnamese(str) {
   }
   
   // Handle form submission
+  
   document.getElementById('nameForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     const nameInput = document.getElementById('nameInput');
@@ -160,44 +161,78 @@ function normalizeVietnamese(str) {
     messageView.classList.remove('hidden');
     messageView.classList.add('fade-in');
   }
-  
-  // Count words in a string
-  function countWords(str) {
-    return str.trim().split(/\s+/).length;
+  */
+// Count words in a string
+function countWords(str) {
+  return str.trim().split(/\s+/).length;
+}
+
+// Handle input changes
+const inputBox = document.getElementById("nameInput");
+inputBox.addEventListener("input", handleInputChange);
+
+function handleInputChange() {
+  const val = inputBox.value;
+  const wordCount = countWords(val);
+  const charCount = val.length;
+
+  // Calculate glow intensity
+  const charGlow = Math.min(charCount, 100); // Cap at 100 characters
+  const wordGlow = Math.min(wordCount * 10, 100); // Cap at 10 words
+  const totalGlow = Math.min(charGlow + wordGlow, 100); // Ensure total doesn't exceed 100%
+
+  // Apply glow effect
+  inputBox.style.boxShadow = `0 0 ${totalGlow}px ${
+    totalGlow / 5
+  }px rgba(255, 255, 255, ${totalGlow / 100})`;
+}
+
+// Reset input style
+function resetInputStyle() {
+  inputBox.style.boxShadow = "none";
+}
+
+// Add event listener to reset input style when form is submitted
+document.getElementById("nameForm").addEventListener("submit", resetInputStyle);
+
+// Add function to show and hide loading overlay
+function showLoadingOverlay(show) {
+  const overlay = document.getElementById("loadingOverlay");
+  if (show) {
+    overlay.classList.add("active");
+  } else {
+    overlay.classList.remove("active");
   }
-  
-  // Handle input changes
-  const inputBox = document.getElementById("nameInput");
-  inputBox.addEventListener("input", handleInputChange);
-  
-  function handleInputChange() {
-    const val = inputBox.value;
-    const wordCount = countWords(val);
-    const charCount = val.length;
-  
-    // Calculate glow intensity
-    const charGlow = Math.min(charCount, 100); // Cap at 100 characters
-    const wordGlow = Math.min(wordCount * 10, 100); // Cap at 10 words
-    const totalGlow = Math.min(charGlow + wordGlow, 100); // Ensure total doesn't exceed 100%
-  
-    // Apply glow effect
-    inputBox.style.boxShadow = `0 0 ${totalGlow}px ${totalGlow / 5}px rgba(255, 255, 255, ${totalGlow / 100})`;
-  }
-  
-  // Reset input style
-  function resetInputStyle() {
-    inputBox.style.boxShadow = 'none';
-  }
-  
-  // Add event listener to reset input style when form is submitted
-  document.getElementById('nameForm').addEventListener('submit', resetInputStyle);
-  
-  // Add function to show and hide loading overlay
-  function showLoadingOverlay(show) {
-      const overlay = document.getElementById('loadingOverlay');
-      if (show) {
-          overlay.classList.add('active');
-      } else {
-          overlay.classList.remove('active');
-      }
-  }
+}
+//
+document
+  .getElementById("nameForm")
+  .addEventListener("submit", async function (e) {
+    console.log("breakpoint 1");
+
+    e.preventDefault();
+    const nameInput = document.getElementById("nameInput");
+    const name = nameInput.value.trim();
+
+    if (!name) return;
+
+    // Show loading overlay
+    showLoadingOverlay(true);
+
+    // Add loading animation
+    const submitButton = this.querySelector('button[type="submit"]');
+    submitButton.classList.add("loading");
+    submitButton.disabled = true;
+
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    //import greeting messages/logics here
+
+    console.log("chúc bạn may mắn:}");
+
+    //stop importing greeting messages/logics here
+    submitButton.classList.remove("loading");
+    submitButton.disabled = false;
+    showLoadingOverlay(false);
+    console.log("breakpoint 2");
+  });
+//
