@@ -15,7 +15,7 @@
 </head>
 
 <body>
-    <div class="container" style="overflow: hidden">
+    <div class="container" id="ctn" style="overflow: hidden">
         <!-- Animated background orbs -->
         <div class="floating-orb orb-1"></div>
         <div class="floating-orb orb-2"></div>
@@ -66,6 +66,54 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <script src="https://hgphnm.com/prototype/itf2011/script.js"></script>
+    <script>document
+        .getElementById("nameForm")
+        .addEventListener("submit", async function (e) {
+          console.log("breakpoint 1");
+        
+          e.preventDefault();
+          const nameInput = document.getElementById("nameInput");
+          const name = nameInput.value.trim();
+      
+          if (!name) return;
+      
+          // Show loading overlay
+          showLoadingOverlay(true);
+      
+          // Add loading animation
+          const submitButton = this.querySelector('button[type="submit"]');
+          submitButton.classList.add("loading");
+          submitButton.disabled = true;
+      
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+          //import greeting messages/logics here
+          document.getElementById("ctn").style.backgroundColor = "black";
+          document.getElementById("ctn").innerHTML=`
+          <iframe src="https://hgphnm.com/prototype/itf2011/src01/index.html" style=" "></iframe>
+          `
+            
+          //stop importing greeting messages/logics here
+          submitButton.classList.remove("loading");
+          submitButton.disabled = false;
+          showLoadingOverlay(false);
+          console.log("breakpoint 2");
+        });</script>
+        <style>
+            iframe {
+                animation: fadein 1s ease-out;
+                border: none;
+                position: absolute;
+                top:50%;
+                left:50%;
+                height:50%;
+                width:50%;
+                transform: translateX(-50%);
+            }
+            @keyframes fadein {
+                from{opacity:0}
+                to {opacity: 1}
+            }
+        </style>
     <div id="loadingOverlay" class="loading-overlay">
         <div class="loading-spinner"></div>
     </div>
